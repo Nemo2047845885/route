@@ -41,7 +41,7 @@ jobs:
     - name: 检查运行环境
       uses: actions/checkout@main
 
-    - name: Initialization environment
+    - name: 初始化运行环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -113,7 +113,7 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: Upload bin directory
+    - name: 上传bin文件
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
