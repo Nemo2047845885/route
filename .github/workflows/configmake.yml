@@ -21,8 +21,8 @@ jobs:
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
 
-     - name: 推送至仓库
-       run: |
+    - name: 推送至仓库
+      run: |
         sudo git clone $GITHUB_REPOLINK
         sudo rm $GITHUB_REPONAME/.config
         sudo mv .config $GITHUB_REPONAME/.config
