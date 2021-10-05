@@ -24,16 +24,20 @@ jobs:
     - name: 克隆配置生成文件
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        cd $REPO_NAME
-        cd openwrt && ./scripts/feeds update -a
-        cd openwrt && ./scripts/feeds install -a
+        ./openwrt/scripts/feeds update -a
+        ./openwrt/scripts/feeds install -a
 
     - name: SSH连接准备
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
 
-    - name: 推送至仓库
+    - name: 准备上传文件
       run: |
-        sudo git clone $GITHUB_REPOLINK
-        sudo rm $GITHUB_REPONAME/.config
-        sudo mv .config $GITHUB_REPONAME/.config
+        sudo mkdir file
+        sudo mv openwrt/.config file/.config
+    - name: 上传至Artifact
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: .config
+        path: file
